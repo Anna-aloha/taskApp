@@ -127,13 +127,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
+    //検索機能
     @IBOutlet weak var searchBar: UISearchBar!
     
-    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false).filter("category == %@", searchText)
+        if searchText == "" {
+            taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false)
+        } else {
+            taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false).filter("category == %@", searchText)
+
+        }
         tableView.reloadData()
+        
+        searchBar.resignFirstResponder()
     }
-    
     
 }
